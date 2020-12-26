@@ -9,10 +9,8 @@ db = {}
 def search():
   term = request.args.get('term')
   if term == '':
-    print('No Text')
     return redirect('/')
   else:
-    print(term)
     if term not in db.keys():
       db[term] = get_jobs(term)
 

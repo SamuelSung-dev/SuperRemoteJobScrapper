@@ -26,6 +26,8 @@ def get_so_jobs(term):
   so_r = requests.get(so_search_url)
   print(f'Scrapping : {so_search_url}')
   so_soup = BeautifulSoup(so_r.text, 'html.parser')
+  # with open(f'so_{term}.html','w') as f:
+  #   f.write(so_soup.prettify())
   so_job_total = int(so_soup.find(class_='js-search-title').span.text.split(' ')[0])
   if so_job_total == 0:
     print('No jobs')
@@ -56,6 +58,29 @@ def get_so_jobs(term):
       })
   return job_list
 
+def get_wwr_jobs(term):
+  wwr_search_url = wwr_url+term
+  wwr_r = requests.get(wwr_search_url)
+  print(f'Scrapping : {wwr_search_url}')
+  wwr_soup = BeautifulSoup(wwr_r.text, 'html.parser')
+  if wwr_soup.find(class_='no_result'):
+    return
+  wwr_job_list = wwr_soup.find(class_='jobs').find_all('li')
+  job_list = []
+  for job in wwr_job_list[0:-1]:
+    if job['class'] != 'view-all':
+      job_info = job.contents[-1]
+      href = 'https://weworkremotely.com'+job_info['href']
+      company = job_info.find(class_='company').text
+      title = job_info.find(class_='title').text
+      job_list.append({
+        'title':title,
+        'company':company,
+        'href':href,
+      })
+  return job_list
+
 def get_jobs(term):
-  so_jobs = get_so_jobs(term)
-  return so_jobs
+  # so_jobs = get_so_jobs(term)
+  wwr_jobs = get_wwr_jobs(term)
+  return wwr_jobs

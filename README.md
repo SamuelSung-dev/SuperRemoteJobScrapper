@@ -1,6 +1,6 @@
 # Super Remote Job Scrapper
 
-Using Term, Search remote Jobs
+Search remote Jobs
 
 worked on [repl.it](https://repl.it/@SamuelSungdev/SuperRemoteJobScrapper)
 
