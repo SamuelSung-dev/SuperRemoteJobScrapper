@@ -9,12 +9,19 @@
 <body>
 	<header>
 		<h1>Remote Jobs</h1>
-		<h2>{{term}} jobs found.</h2>
+		<h2>{{job_list|length}} {{term}} jobs found.</h2>
 		<h3><a href='#'>Export to CSV</a></h3>
 		<h4><a href='/'>← Go back</a></h4>
 	</header>
 	<main>
-
+    {% for job in job_list %}
+    <div>
+      <h2>{{job['title']}}</h2>
+      <h3>{{job['company']}}</h3>
+      <h3><a href="{{job['href']}}" target="_blank">Apply</a></h3>
+    </div>
+    <hr>
+    {% endfor %}
 	</main>
 </body>
 
