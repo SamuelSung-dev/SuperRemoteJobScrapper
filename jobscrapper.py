@@ -100,7 +100,7 @@ def get_ro_jobs(term):
   return job_list
 
 def get_jobs(term):
-  # so_jobs = get_so_jobs(term)
-  # wwr_jobs = get_wwr_jobs(term)
+  so_jobs = get_so_jobs(term)
+  wwr_jobs = get_wwr_jobs(term)
   ro_jobs = get_ro_jobs(term)
-  return ro_jobs
+  return so_jobs + wwr_jobs + ro_jobs
