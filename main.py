@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, redirect, send_file
+from flask import Flask, render_template, request, redirect, send_file, after_this_request
 from jobscrapper import get_jobs
 from exporter import save_to_file
+from os import remove
 
 app = Flask('SuperRemoteJobScrapper')
 
@@ -32,6 +33,12 @@ def export():
     if term not in db.keys():
       raise Exception()
     save_to_file(term, db[term])
+
+    @after_this_request
+    def cleanup(response):
+      remove(f'{term}.csv')
+      return response
+
     return send_file(f'{term}.csv', mimetype='text/csv', attachment_filename=f'{term}.csv', as_attachment=True)
   except:
     return redirect('/')
