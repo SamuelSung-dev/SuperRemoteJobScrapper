@@ -54,7 +54,7 @@ def get_so_jobs(term):
         'company':company,
         'href':href,
       })
-  return so_job_list
+  return job_list
 
 def get_jobs(term):
   so_jobs = get_so_jobs(term)
