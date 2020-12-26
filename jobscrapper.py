@@ -11,13 +11,10 @@ https://remoteok.io/remote-dev+python-jobs
 Good luck!
 """
 
-so_url = f'https://stackoverflow.com/jobs?r=true&q='
-wwr_url = f'https://weworkremotely.com/remote-jobs/search?term='
-ro_url = f'https://remoteok.io/remote-dev+'
-
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36'}
 
 def get_so_jobs(term):
+  so_url = f'https://stackoverflow.com/jobs?r=true&q='
   so_search_url = so_url+term
   so_r = requests.get(so_search_url, headers=headers)
   print(f'Scrapping : {so_search_url}')
@@ -48,18 +45,19 @@ def get_so_jobs(term):
       href = 'https://stackoverflow.com'+job.find(class_='fs-body3')  .a['href']
       company = job.find(class_='fs-body1').find('span').text
       job_list.append({
-        'title':title,
-        'company':company,
-        'href':href,
+        'Title':title,
+        'Company':company,
+        'Link':href,
       })
   return job_list
 
 def get_wwr_jobs(term):
+  wwr_url = f'https://weworkremotely.com/remote-jobs/search?term='
   wwr_search_url = wwr_url+term
   wwr_r = requests.get(wwr_search_url, headers=headers)
   print(f'Scrapping : {wwr_search_url}')
   wwr_soup = BeautifulSoup(wwr_r.text, 'html.parser')
-  if wwr_soup.find(class_='no_result'):
+  if wwr_soup.find(class_='no_results'):
     return []
   wwr_job_list = wwr_soup.find(class_='jobs').find_all('li')
   job_list = []
@@ -70,19 +68,19 @@ def get_wwr_jobs(term):
       company = job_info.find(class_='company').text
       title = job_info.find(class_='title').text
       job_list.append({
-        'title':title,
-        'company':company,
-        'href':href,
+        'Title':title,
+        'Company':company,
+        'Link':href,
       })
   return job_list
 
 def get_ro_jobs(term):
+  ro_url = f'https://remoteok.io/remote-dev+'
   ro_search_url = ro_url+f'{term}-jobs'
   ro_r = requests.get(ro_search_url, headers=headers)
   print(f'Scrapping : {ro_search_url}')
   ro_soup = BeautifulSoup(ro_r.text, 'html.parser')
   if ro_soup.find(class_='center'):
-    print('404')
     return []
   
   ro_job_list = ro_soup.find_all(class_='job')
@@ -93,9 +91,9 @@ def get_ro_jobs(term):
       company = job.find(itemprop='name').text
       title = job.find(itemprop='title').text
       job_list.append({
-        'title':title,
-        'company':company,
-        'href':href,
+        'Title':title,
+        'Company':company,
+        'Link':href,
       })
   return job_list
 
