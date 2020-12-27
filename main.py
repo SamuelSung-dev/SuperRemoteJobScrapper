@@ -15,13 +15,8 @@ def search():
   else:
     term = term.lower()
     if term not in db.keys():
-      jobs = get_jobs(term)
-      if jobs != []:
-        db[term] = jobs
-  if term in db.keys():
-    return render_template('search.html',term = term, job_list=db[term])
-  else:
-    return render_template('search.html',term = term, job_list=[])
+      db[term] = get_jobs(term)
+  return render_template('search.html',term = term, job_list=db[term])
 
 @app.route('/export')
 def export():
@@ -31,6 +26,8 @@ def export():
       raise Exception() 
     term = term.lower()
     if term not in db.keys():
+      raise Exception()
+    if len(db[term]) == 0:
       raise Exception()
     save_to_file(term, db[term])
 
